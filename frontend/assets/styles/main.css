@@ -1,0 +1,126 @@
+:root {
+    --bg-primary: #0f0f0f;
+    --bg-secondary: #1a1a1f;
+    --bg-navbar: #111114;
+    --border-subtle: #2a2a35;
+    --text-primary: #e8e8ee;
+    --text-secondary: #8888aa;
+    --accent: #4f6ef7;
+    --positive: #22c55e;
+    --negative: #ef4444;
+    --neutral: #eab308;
+    
+    --heatmap-v3: #16a34a;
+    --heatmap-v1: #22c55e;
+    --heatmap-v0: #86efac;
+    --heatmap-zero: #374151;
+    --heatmap-m0: #fca5a5;
+    --heatmap-m1: #ef4444;
+    --heatmap-m3: #dc2626;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.5;
+    font-size: 14px;
+}
+
+[ng-cloak] {
+    display: none !important;
+}
+
+.content-container {
+    padding-top: 56px; /* Navbar height */
+    min-height: 100vh;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+button, input, select {
+    font-family: inherit;
+}
+
+/* Scrollbar styles */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #444;
+}
+
+/* Common Layout Elements */
+.page-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.text-positive { color: var(--positive); }
+.text-negative { color: var(--negative); }
+.text-secondary { color: var(--text-secondary); }
+
+/* Typography */
+h1 { font-size: 24px; font-weight: 600; margin-bottom: 1rem; }
+h2 { font-size: 20px; font-weight: 600; margin-bottom: 1rem; }
+h3 { font-size: 16px; font-weight: 500; margin-bottom: 0.75rem; }
+
+.small-label { font-size: 12px; font-weight: 400; color: var(--text-secondary); }
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    border: none;
+    font-size: 14px;
+}
+
+.btn-primary {
+    background-color: var(--accent);
+    color: white;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+.page-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 60vh;
+    color: var(--text-secondary);
+}

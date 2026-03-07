@@ -1,0 +1,248 @@
+# PROYECTO: Clon de Financial Hub España — financial-hub.es
+
+## OBJETIVO
+Crea una copia funcional y estéticamente fiel de https://www.financial-hub.es
+enfocada en la sección /mercado-espanol. Es una plataforma de gestión de
+patrimonio e inversiones para el mercado bursátil español.
+
+## STACK TECNOLÓGICO
+- **Frontend:** AngularJS (Angular 1.x) con componentes modulares
+- **Backend:** Python (FastAPI o Flask) con API REST
+- **Base de datos:** PostgreSQL o SQLite para desarrollo local
+- **Estilos:** CSS puro o SCSS — tema oscuro (dark mode)
+- **Gráficos:** D3.js para el heatmap y Chart.js para gráficas de cotización
+- **Servidor dev:** Python para el backend en puerto 8000, Angular en puerto 4200
+
+---
+
+## ESTRUCTURA DE PÁGINAS Y RUTAS
+
+Implementa las siguientes rutas de Angular:
+
+| Ruta | Componente | Descripción |
+|------|-----------|-------------|
+| / | HomeComponent | Redirige a /mercado-espanol |
+| /mercado-espanol | MercadoComponent | Vista principal del mercado |
+| /mercado-espanol/screener | ScreenerComponent | Heatmap + filtros |
+| /mercado-espanol/estadisticas | EstadisticasComponent | Estadísticas del mercado |
+| /mercado-espanol/pizarra-andres | PizarraComponent | Sección editorial |
+| /global | GlobalComponent | Buscador global de activos |
+| /login | LoginComponent | Pantalla de autenticación |
+| /feedback | FeedbackComponent | Formulario de feedback |
+
+---
+
+## DISEÑO VISUAL (replicar fielmente)
+
+### Paleta de colores (dark theme):
+- Fondo principal: #0f0f0f o #111114
+- Fondo de tarjetas/paneles: #1a1a1f o #1e1e24
+- Borde sutil de elementos: #2a2a35
+- Texto primario: #e8e8ee (casi blanco)
+- Texto secundario: #8888aa
+- Acento principal: azul-índigo (#4f6ef7 o similar)
+- Verde positivo: #22c55e
+- Rojo negativo: #ef4444
+- Amarillo neutro: #eab308
+
+### Colores del heatmap:
+- >+3%: verde intenso #16a34a
+- +1% a +3%: verde medio #22c55e
+- 0% a +1%: verde claro #86efac
+- 0%: gris #374151
+- -1% a 0%: rojo claro #fca5a5
+- -3% a -1%: rojo medio #ef4444
+- <-3%: rojo intenso #dc2626
+
+### Tipografía:
+- Fuente: Inter o system-ui, sans-serif
+- Tamaños: 12px (etiquetas), 14px (cuerpo), 16px (títulos menores), 20-24px (títulos)
+- Peso: 400 normal, 500 medium, 600 semibold para títulos
+
+---
+
+## NAVEGACIÓN (NavBar)
+
+Barra superior fija, fondo #111114, altura ~56px, con:
+- **Logo izquierda:** "Financial Hub" con icono pequeño (usar un SVG genérico de gráfico)
+- **Menú centro-derecha (desktop):** Mercado | Screener | Estadísticas | Global | Feedback | Pizarra de Andrés
+- **Acciones derecha:** Icono de notificaciones (campana) + botón "Iniciar sesión"
+- **Menú mobile:** hamburguesa colapsable con los mismos ítems
+- El ítem activo tiene color acento (azul) y borde inferior
+- En mobile aparece una barra inferior con: Fondos | Andrés (iconos)
+
+---
+
+## COMPONENTE: SCREENER (página principal mercado)
+
+### Filtros superiores (pills/tabs):
+- Tres tabs: **Todas | IBEX35 | Watchlist**
+- Dropdown "Todos los sectores" con opciones: Tecnología, Financiero, Energía, Consumo, Industria, Salud, Telecomunicaciones, Inmobiliario, Utilities, Materiales
+- Dropdown "Todas las subcategorías" (dependiente del sector)
+- Selector de visualización con dos opciones: **Capitalización / Volumen** (toggle)
+- Selector de agrupación: **Por Sector | Por Subcategoría | Sin Agrupar**
+
+### Heatmap del mercado:
+- Título de sección "Mapa de Calor del Mercado" + contador de acciones (ej: "35 acciones")
+- Texto helper: "Usa la rueda del ratón para hacer zoom"
+- El mapa ocupa el 100% del ancho disponible, altura mínima 500px
+- Cada celda muestra: ticker (ej: SAN), nombre corto, porcentaje de cambio
+- El tamaño de cada celda es proporcional a la capitalización bursátil (treemap)
+- Las celdas se colorean según el % de cambio (escala definida arriba)
+- Al hacer hover: tooltip con nombre completo, precio actual, % cambio, capitalización, volumen
+- Zoom con rueda del ratón (scale transform o D3 zoom)
+- Leyenda de colores en la parte inferior: >3% | 1-3% | 0-1% | 0% | 0 a -1% | -1 a -3% | <-3%
+
+---
+
+## COMPONENTE: BUSCADOR GLOBAL (/global)
+
+- Título "Buscador Global"
+- Subtítulo: "Encuentra fondos, planes de pensiones, ETFs y más. Búsqueda inteligente por nombre, ISIN, ticker o código DGS."
+- Input de búsqueda grande y centrado con placeholder dinámico
+- Filtros en pills horizontales:
+  - Tipo de activo: **Acciones | Fondos | Pensiones | ETFs**
+  - Divisa (dropdown)
+  - Mercado (dropdown)
+- Tip informativo: "💡 Truco: Escribe un ticker español (SAN, BBVA) para priorizar acciones españolas."
+- Tabla de resultados con columnas: Nombre, Ticker/ISIN, Tipo, Mercado, Precio, Cambio %
+- Paginación o scroll infinito
+
+---
+
+## COMPONENTE: LOGIN
+
+- Logo centrado grande de Financial Hub
+- Formulario simple: Email + Contraseña
+- Botón "Iniciar sesión" con estilo acento
+- Link "¿No tienes cuenta? Regístrate"
+- Estado: "Cargando..." mientras procesa (spinner)
+- Sin fondo de tarjeta visible inicialmente (carga dinámica)
+
+---
+
+## API BACKEND (Python/FastAPI)
+
+Crea los siguientes endpoints REST:
+```python
+# Mercado español - acciones del IBEX35 y otros
+GET /api/mercado/acciones          # Lista de acciones con cotización actual
+GET /api/mercado/acciones/{ticker} # Detalle de una acción
+GET /api/mercado/sectores          # Lista de sectores disponibles
+GET /api/mercado/heatmap           # Datos formateados para el heatmap (ticker, nombre, sector, cap, precio, cambio_pct)
+
+# Buscador global
+GET /api/global/buscar?q=&tipo=&divisa=&mercado=  # Búsqueda de activos
+
+# Autenticación
+POST /api/auth/login               # Login con email/password
+POST /api/auth/logout
+GET  /api/auth/me                  # Usuario actual
+
+# Estadísticas
+GET /api/mercado/estadisticas      # Datos agregados del mercado
+```
+
+### Datos mock para el heatmap (usar estos para desarrollo):
+Incluye al menos las 35 empresas del IBEX35:
+SAN (Santander), BBVA, ITX (Inditex), IBE (Iberdrola), TEF (Telefónica),
+REP (Repsol), CABK (CaixaBank), AMS (Amadeus), ACS, FER (Ferrovial),
+MAP (Mapfre), ELE (Endesa), RED (Red Eléctrica), CLNX (Cellnex),
+COL (Inmocolonial), MTS (ArcelorMittal), GRF (Grifols), ACX (Acerinox),
+ENG (Enagás), NTGY (Naturgy), AENA, IAG, MEL (Meliá), SOL (Solaria),
+BNXT (Bankinter), UNI (Unicaja), SAB (Sabadell), LOG (Logista),
+PHM (Pharma Mar), VIS (Viscofan), SGRE (Siemens Gamesa), PUIG, FLUIDRA,
+ROVI, NXST (Nexts)
+
+Genera precios y variaciones aleatorias realistas al arrancar el servidor.
+
+---
+
+## ESTRUCTURA DE ARCHIVOS
+financial-hub-clone/
+├── backend/
+│   ├── main.py                 # FastAPI app principal
+│   ├── routers/
+│   │   ├── mercado.py
+│   │   ├── global_search.py
+│   │   └── auth.py
+│   ├── models/
+│   │   └── schemas.py
+│   ├── data/
+│   │   └── ibex35_mock.py      # Datos mock del mercado
+│   └── requirements.txt
+│
+├── frontend/
+│   ├── index.html              # Entry point Angular
+│   ├── app/
+│   │   ├── app.module.js
+│   │   ├── app.routes.js
+│   │   ├── components/
+│   │   │   ├── navbar/
+│   │   │   ├── screener/       # Heatmap principal
+│   │   │   ├── global/         # Buscador
+│   │   │   ├── login/
+│   │   │   ├── estadisticas/
+│   │   │   └── pizarra/
+│   │   └── services/
+│   │       ├── mercado.service.js
+│   │       └── auth.service.js
+│   └── assets/
+│       ├── styles/
+│       │   ├── main.scss       # Variables y estilos globales
+│       │   └── components/
+│       └── logo.svg
+│
+├── README.md
+└── docker-compose.yml          # Opcional
+
+---
+
+## COMPORTAMIENTOS FUNCIONALES CLAVE
+
+1. **Heatmap interactivo:** El treemap se renderiza con D3.js. Las celdas tienen zoom
+   con rueda del ratón. El tooltip aparece al hacer hover con datos en tiempo real.
+
+2. **Filtros reactivos:** Al cambiar los tabs (Todas/IBEX35/Watchlist) o los
+   dropdowns de sector/subcategoría, el heatmap se actualiza filtrando los datos
+   sin recargar la página. AngularJS $watch o ng-change.
+
+3. **Actualización periódica:** Los precios del heatmap se refrescan cada 30 segundos
+   llamando al endpoint /api/mercado/heatmap (simular con variaciones aleatorias).
+
+4. **Búsqueda en tiempo real:** El buscador global filtra con debounce de 300ms
+   mientras el usuario escribe, mostrando resultados instantáneos.
+
+5. **Responsive:** La navbar colapsa en mobile. El heatmap reduce su tamaño.
+   Los filtros se apilan verticalmente en pantallas <768px.
+
+6. **Estado de autenticación:** Sin token → mostrar "Iniciar sesión". Con token →
+   mostrar avatar/nombre del usuario y acceso a Watchlist.
+
+---
+
+## INSTRUCCIONES DE ARRANQUE
+
+El README debe incluir:
+```bash
+# Backend
+cd backend
+pip install -r requirements.txt
+uvicorn main:app --reload --port 8000
+
+# Frontend (servir estáticamente)
+cd frontend
+python -m http.server 4200
+# o usar live-server
+```
+
+---
+
+## NOTAS FINALES
+
+- La web original usa Next.js pero TÚ debes implementarlo en AngularJS + Python.
+- Mantén la estética dark exacta: fondos muy oscuros, texto claro, acentos azul-índigo.
+- Prioriza que el heatmap funcione visualmente bien antes que los otros componentes.
+- Todo el texto de la interfaz debe estar en español.
+- No uses librerías de UI externas (Bootstrap, Material) — CSS propio para fidelidad al diseño original.
+- Implementa CORS en el backend para que Angular pueda consumir la API.
