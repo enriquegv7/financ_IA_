@@ -4,4 +4,3 @@ pydantic
 python-multipart
 python-jose[cryptography]
 passlib[bcrypt]
-fastapi-cors

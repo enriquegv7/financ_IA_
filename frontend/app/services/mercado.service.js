@@ -19,8 +19,4 @@ angular.module('financialHubApp')
     this.getEstadisticas = function() {
         return $http.get(API_BASE_URL + '/mercado/estadisticas');
     };
-
-    this.buscarGlobal = function(params) {
-        return $http.get(API_BASE_URL + '/global/buscar', { params: params });
-    };
 }]);
