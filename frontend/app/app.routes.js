@@ -19,6 +19,9 @@ angular.module('financialHubApp')
         .when('/login', {
             template: '<login-component></login-component>'
         })
+        .when('/register', {
+            template: '<register-component></register-component>'
+        })
         .when('/feedback', {
             template: '<div class="page-placeholder"><h2>Feedback</h2><p>Página en construcción</p></div>'
         })
