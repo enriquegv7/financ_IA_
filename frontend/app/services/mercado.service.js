@@ -13,7 +13,7 @@ angular.module('financialHubApp')
     };
 
     this.getHeatmapData = function() {
-        return $http.get(API_BASE_URL + '/mercado/heatmap');
+        return $http.get(API_BASE_URL + '/mercado/acciones');
     };
 
     this.getEstadisticas = function() {

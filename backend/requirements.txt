@@ -1,6 +1,17 @@
+# Web framework
 fastapi
-uvicorn
-pydantic
+uvicorn[standard]
 python-multipart
+
+# Base de datos
+sqlalchemy
+alembic
+
+# Autenticación
 python-jose[cryptography]
 passlib[bcrypt]
+
+# Validación y configuración
+pydantic[email]
+pydantic-settings
+python-dotenv

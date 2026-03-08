@@ -18,14 +18,17 @@ Este proyecto es un clon funcional y estéticamente fiel de la plataforma [Finan
 
 ### 1. Backend (Servidor API)
 
-Asegúrate de tener Python 3.8+ instalado.
+Asegúrate de tener Python 3.10+ instalado. El backend utiliza FastAPI con una arquitectura funcional y una base de datos SQLite persistente.
 
 ```bash
 cd backend
+# Se recomienda usar un entorno virtual
 pip install -r requirements.txt
 python main.py
-# El servidor se ejecutará en http://localhost:8000
 ```
+- **URL de la API:** `http://localhost:8000` (¡No uses `0.0.0.0` en el navegador!)
+- **Documentación Interactiva (Swagger):** `http://localhost:8000/docs`
+- **Base de Datos:** Se creará automáticamente un archivo `aplicacion.db` al arrancar.
 
 ### 2. Frontend (Servidor de Desarrollo)
 
@@ -33,8 +36,8 @@ Puedes servir los archivos estáticos usando cualquier servidor web. Por ejemplo
 
 ```bash
 cd frontend
-python -m http.server 4200
-# Abre http://localhost:4200 en tu navegador
+python -m http.server 4200 --bind 127.0.0.1
+# Abre obligatoriamente http://localhost:4200 en tu navegador
 ```
 
 ## Características Implementadas
@@ -45,7 +48,7 @@ python -m http.server 4200
 - **Diseño Responsive:** Navbar colapsable y barra inferior para dispositivos móviles.
 - **Modo Oscuro:** Paleta de colores fiel a la web original.
 - **Actualización Automática:** El heatmap se refresca cada 30 segundos con variaciones de precio simuladas.
-- **Autenticación Mock:** Sistema de login funcional con almacenamiento de estado.
+- **Autenticación Real:** Sistema de registro, login y gestión de sesiones mediante JWT y persistencia en base de datos.
 
 ---
 Proyecto desarrollado para demostración técnica.

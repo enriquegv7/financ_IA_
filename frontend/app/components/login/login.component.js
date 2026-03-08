@@ -4,19 +4,27 @@ angular.module('financialHubApp')
     <div class="login-page">
         <div class="login-container">
             <div class="login-logo">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"></path><path d="M18 9l-5 5-2-2-4 4"></path></svg>
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 3v18h18"></path>
+                    <path d="M18 9l-5 5-2-2-4 4"></path>
+                </svg>
                 <h1>Financial Hub</h1>
+            </div>
+
+            <!-- Mensaje de error de la API -->
+            <div class="alert alert-error" ng-if="$ctrl.error">
+                {{ $ctrl.error }}
             </div>
 
             <form class="login-form" ng-submit="$ctrl.login()">
                 <div class="form-group">
                     <label>Email</label>
-                    <input type="email" ng-model="$ctrl.email" required placeholder="tu@email.com">
+                    <input type="email" ng-model="$ctrl.email" required placeholder="tu@email.com" autocomplete="email">
                 </div>
 
                 <div class="form-group">
                     <label>Contraseña</label>
-                    <input type="password" ng-model="$ctrl.password" required placeholder="********">
+                    <input type="password" ng-model="$ctrl.password" required placeholder="********" autocomplete="current-password">
                 </div>
 
                 <button type="submit" class="btn btn-primary btn-block" ng-disabled="$ctrl.loading">
@@ -36,12 +44,26 @@ angular.module('financialHubApp')
         ctrl.email    = '';
         ctrl.password = '';
         ctrl.loading  = false;
+        ctrl.error    = null;
+
+        // Si ya está autenticado, redirigir directamente
+        if (AuthService.isLoggedIn()) {
+            $location.path('/mercado-espanol');
+        }
 
         ctrl.login = function() {
             ctrl.loading = true;
+            ctrl.error   = null;
+
             AuthService.login({ email: ctrl.email, password: ctrl.password })
                 .then(function() {
                     $location.path('/mercado-espanol');
+                })
+                .catch(function(response) {
+                    // Mostrar el mensaje de error devuelto por la API
+                    ctrl.error = (response.data && response.data.detail)
+                        ? response.data.detail
+                        : 'Error al iniciar sesión. Inténtalo de nuevo.';
                 })
                 .finally(function() {
                     ctrl.loading = false;

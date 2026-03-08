@@ -40,24 +40,24 @@ IBEX35_COMPANIES = [
 ]
 
 
-def get_mock_data() -> list:
+def obtener_datos_simulados() -> list:
     """Genera datos de mercado simulados para todas las empresas del IBEX35."""
     return [
         {
-            **co,
+            **empresa,
             "precio":         round(random.uniform(1.0, 150.0), 2),
             "cambio_pct":     round(random.uniform(-5.0, 5.0), 2),
             "capitalizacion": round(random.uniform(500, 100_000), 0) * 1_000_000,
             "volumen":        round(random.uniform(100_000, 10_000_000), 0),
         }
-        for co in IBEX35_COMPANIES
+        for empresa in IBEX35_COMPANIES
     ]
 
 
-def find_accion_by_ticker(ticker: str) -> Optional[dict]:
+def find_accion_por_ticker(ticker: str) -> Optional[dict]:
     """Devuelve los datos de mercado de una empresa por ticker, o None si no existe."""
-    ticker_upper = ticker.upper()
+    ticker_en_mayusculas = ticker.upper()
     return next(
-        (item for item in get_mock_data() if item["ticker"] == ticker_upper),
+        (item for item in obtener_datos_simulados() if item["ticker"] == ticker_en_mayusculas),
         None,
     )
